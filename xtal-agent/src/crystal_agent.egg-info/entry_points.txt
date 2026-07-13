@@ -1,0 +1,2 @@
+[console_scripts]
+crystal-agent = crystal_agent.cli:app

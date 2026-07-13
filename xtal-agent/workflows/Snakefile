@@ -1,0 +1,21 @@
+configfile: "config.example.yaml"
+
+PROJECT_DIR = config["project_dir"]
+MANIFEST = config["manifest"]
+RESULTS_DIR = config["results_dir"]
+REPORTS_DIR = config["reports_dir"]
+
+
+rule all:
+    input:
+        f"{REPORTS_DIR}/validation_summary.html"
+
+
+rule run_full_pipeline:
+    input:
+        MANIFEST
+    output:
+        html=f"{REPORTS_DIR}/validation_summary.html",
+        candidates=f"{RESULTS_DIR}/ranked_candidates.json",
+    shell:
+        "crystal-agent run-pipeline {PROJECT_DIR}"

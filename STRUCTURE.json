@@ -1,0 +1,75 @@
+{
+  "name": "crystal-agent-publication-package",
+  "source_root": ".",
+  "structure_basis": [
+    "xtal-agent/pyproject.toml",
+    "AGENTS.md",
+    "xtal-agent/README.md",
+    "docs/agent_architecture_coverage_audit.md",
+    "xtal-agent/src/crystal_agent/cli.py",
+    "xtal-agent/src/crystal_agent/architecture.py"
+  ],
+  "sections": {
+    "code": {
+      "in_repo": [
+        "xtal-agent/pyproject.toml",
+        "xtal-agent/env/",
+        "xtal-agent/src/crystal_agent/",
+        "xtal-agent/tests/",
+        "xtal-agent/workflows/"
+      ]
+    },
+    "templates": {
+      "in_repo": [
+        "xtal-agent/templates/report.html.j2",
+        "xtal-agent/src/crystal_agent/architecture.py"
+      ]
+    },
+    "documentation": {
+      "in_repo": [
+        "AGENTS.md",
+        "skills/",
+        "xtal-agent/AGENTS.md",
+        "xtal-agent/README.md",
+        "docs/agent_architecture_coverage_audit.md",
+        "docs/"
+      ],
+      "publication_package": [
+        "EXTERNAL_SOFTWARE.md",
+        "DEPLOYMENT.md"
+      ]
+    },
+    "skills": {
+      "in_repo": [
+        "skills/",
+        "xtal-agent/skills/"
+      ],
+      "bundled": [
+        {
+          "name": "msa-generator",
+          "path": "vendored_skills/msa-generator/"
+        },
+        {
+          "name": "af2-predictor",
+          "path": "vendored_skills/af2-predictor/"
+        },
+        {
+          "name": "af2-postprocess",
+          "path": "vendored_skills/af2-postprocess/"
+        },
+        {
+          "name": "alphafold3-predictor",
+          "path": "vendored_skills/alphafold3-predictor/"
+        },
+        {
+          "name": "writing-skills",
+          "path": "vendored_skills/writing-skills/"
+        },
+        {
+          "name": "test-driven-development",
+          "path": "vendored_skills/test-driven-development/"
+        }
+      ]
+    }
+  }
+}

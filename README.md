@@ -1,8 +1,6 @@
-# Xtal-Agent
-The manual, SKILL, deployment instruction and source code of Xtal-Agent
-# Xtal Agent Publication Package
+# Crystal Agent Publication Package
 
-This package is a publication-oriented full local-deployable bundle of the `Xtal-Agent` repository.
+This package is a publication-oriented full local-deployable bundle of the `crystal-agent` repository.
 
 It is organized to match the structure defined by the agent's own code and operating documents, rather than an ad hoc grouping. The four sections used here are:
 
@@ -61,7 +59,6 @@ cd ..
 ```
 
 2. make sure the bundled skill directories are available to your LLM workflow:
-
 - repository skills are included under `skills/`
 - bundled vendored skills are included under `vendored_skills/`
 
@@ -78,7 +75,6 @@ source xtal-agent/env/activate.sh
 8. continue with environment verification and deployment steps from `DEPLOYMENT.md`
 
 Important:
-
 - this package does not assume the original development paths
 - the user must provide local software locations for externally installed tools
 - the Python package must be installed locally before using the `crystal-agent` CLI

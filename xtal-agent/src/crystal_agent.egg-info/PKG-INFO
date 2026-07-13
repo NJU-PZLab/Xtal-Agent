@@ -1,0 +1,19 @@
+Metadata-Version: 2.4
+Name: crystal-agent
+Version: 0.1.0
+Summary: Local MVP for AI-assisted crystallography workflow automation
+Requires-Python: <3.12,>=3.11
+Requires-Dist: biopython>=1.83
+Requires-Dist: jinja2>=3.1
+Requires-Dist: networkx>=3.2
+Requires-Dist: numpy>=1.26
+Requires-Dist: pandas>=2.2
+Requires-Dist: plotly>=5.20
+Requires-Dist: pydantic>=2.7
+Requires-Dist: pyyaml>=6.0
+Requires-Dist: rich>=13.7
+Requires-Dist: scipy>=1.12
+Requires-Dist: snakemake>=8.0
+Requires-Dist: typer>=0.12
+Provides-Extra: dev
+Requires-Dist: pytest>=8.0; extra == "dev"

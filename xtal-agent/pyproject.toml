@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "crystal-agent"
+version = "0.1.0"
+description = "Local MVP for AI-assisted crystallography workflow automation"
+requires-python = ">=3.11,<3.12"
+dependencies = [
+  "biopython>=1.83",
+  "jinja2>=3.1",
+  "networkx>=3.2",
+  "numpy>=1.26",
+  "pandas>=2.2",
+  "plotly>=5.20",
+  "pydantic>=2.7",
+  "pyyaml>=6.0",
+  "rich>=13.7",
+  "scipy>=1.12",
+  "snakemake>=8.0",
+  "typer>=0.12",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+]
+
+[project.scripts]
+crystal-agent = "crystal_agent.cli:app"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+crystal_agent = []
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

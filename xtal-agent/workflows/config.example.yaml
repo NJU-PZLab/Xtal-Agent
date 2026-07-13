@@ -1,0 +1,4 @@
+project_dir: crystal-agent/projects/example_project
+manifest: crystal-agent/projects/example_project/manifest.yaml
+results_dir: crystal-agent/projects/example_project/results
+reports_dir: crystal-agent/projects/example_project/reports
