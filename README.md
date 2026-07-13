@@ -1,6 +1,6 @@
-# Crystal Agent Publication Package
+# Xtal Agent Publication Package
 
-This package is a publication-oriented full local-deployable bundle of the `crystal-agent` repository.
+This package is a publication-oriented full local-deployable bundle of the `Xtal-Agent` repository.
 
 It is organized to match the structure defined by the agent's own code and operating documents, rather than an ad hoc grouping. The four sections used here are:
 
