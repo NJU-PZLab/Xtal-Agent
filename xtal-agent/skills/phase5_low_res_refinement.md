@@ -7,11 +7,11 @@ This skill applies when the aimless-validated resolution is **≥ 3.6 Å**.
 - **Simple mode**: automatically enters this branch after Phase 2.
 - **Expert mode**: prompts user whether to adopt low-resolution refinement strategy.
 
-Use `crystal-agent phase-guide phase5_lowres` for the code-backed guide.
+Use `xtal-agent phase-guide phase5_lowres` for the code-backed guide.
 
 ## Required Command Templates
 
-Use `crystal-agent command-template phenix-seed`, `phenix-iterative-refine`, `ctruncate`, `freerflag`, `refmac-jelly`, `refmac-free`, `modelcraft-run`, `modelcraft-refmac`, `rscc`, `molprobity-final`.
+Use `xtal-agent command-template phenix-seed`, `phenix-iterative-refine`, `ctruncate`, `freerflag`, `refmac-jelly`, `refmac-free`, `modelcraft-run`, `modelcraft-refmac`, `rscc`, `molprobity-final`.
 
 ## Mandatory Steps
 

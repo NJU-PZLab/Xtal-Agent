@@ -3,16 +3,16 @@
 ## Required Code Call
 
 ```bash
-crystal-agent phase-guide phase5
+xtal-agent phase-guide phase5
 ```
 
 ## Required Command Templates
 
-Use `crystal-agent command-template phenix-seed`, `phenix-iterative-refine`, `ctruncate`, `freerflag`, `refmac-jelly`, `refmac-free`, `rscc`, `molprobity-final`, and `mtzdump-resolution`.
+Use `xtal-agent command-template phenix-seed`, `phenix-iterative-refine`, `ctruncate`, `freerflag`, `refmac-jelly`, `refmac-free`, `rscc`, `molprobity-final`, and `mtzdump-resolution`.
 
-Use `crystal-agent naming-guide` for canonical round file names and resume rules.
+Use `xtal-agent naming-guide` for canonical round file names and resume rules.
 
-Wrap the phase with `crystal-agent guard <project_dir> --before phase5_seed` and `--after phase5_seed`. Run `crystal-agent verify-steps <project_dir>` after every step.
+Wrap the phase with `xtal-agent guard <project_dir> --before phase5_seed` and `--after phase5_seed`. Run `xtal-agent verify-steps <project_dir>` after every step.
 
 ## Mandatory Minimum
 
@@ -51,7 +51,7 @@ Phenix round 2 and later logs must record `INPUT_PDB=phenix_r<N-1>` and `INPUT_M
 
 1. Fit waters with `ordered_solvent=true` or Refmac `solvent yes` until water count and Rfree plateau.
 2. Run TLS optimization and compare to non-TLS. Keep TLS only if Rfree drops.
-3. Run real-space correlation using `crystal-agent command-template rscc`.
+3. Run real-space correlation using `xtal-agent command-template rscc`.
 4. Flag residues with B-factor `> mean + 2 sigma` and RSCC `< 0.7`.
 5. Do not auto-delete flagged residues; report loops and side-chain issues for COOT inspection.
 6. Run final MolProbity after waters and TLS.
@@ -67,3 +67,7 @@ Phenix round 2 and later logs must record `INPUT_PDB=phenix_r<N-1>` and `INPUT_M
 - `water_refine*.pdb`
 - `*tls*.log`
 - `rsc.log`
+
+## COOT post-refinement (optional, enabled by default)
+
+After the R-free plateau, run `xtal-agent coot-optimize <project_dir>` or let Phase 5 invoke `run_coot_optimization()`. The COOT module corrects rotamer outliers, performs density-guided real-space fitting, and adds ordered waters, then re-refines and re-validates. Keep the COOT model only if R-free does not increase and geometry improves; otherwise keep the pre-COOT model.

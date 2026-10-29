@@ -2,17 +2,19 @@
 
 ## Goal
 
-Help external users run `crystal-agent` without redistributing any third-party crystallography software and without requiring the original development paths.
+Help external users run `xtal-agent` without redistributing any third-party crystallography software and without requiring the original development paths.
 
 ## Supported Public Deployment Model
 
 The public deployment model for this project is:
 
-1. install `crystal-agent`
+1. install `xtal-agent`
 2. install third-party crystallography software from official upstream sources
 3. install AI/prediction runtime dependencies if using bundled MSA/AF2/AF3 skills
 3. expose those tools to the runtime environment
-4. run environment checks before starting workflow execution
+4. run `xtal-agent check-env`; the check includes `coot --version`
+5. run `xtal-agent vision-scan <project>` if the vision module is enabled
+6. continue with workflow execution
 
 ## Non-Redistribution Rule
 
@@ -39,6 +41,22 @@ Public deployments should assume only this contract:
 1. required commands are available on `PATH`
 2. or the user has configured their shell or environment so those commands resolve correctly before agent execution
 
+For COOT, Phenix, and CCP4 the agent also supports explicit overrides:
+
+```bash
+export XTAL_AGENT_COOT_BIN=/path/to/coot
+export XTAL_AGENT_PHENIX_BIN=/path/to/phenix.refine
+export XTAL_AGENT_CCP4_SETUP=/path/to/ccp4.setup-sh
+export XTAL_AGENT_COOT_SCRIPTS=/path/to/skills/crystallography-coot-refinement/scripts
+```
+
+COOT is enabled by default for post-refinement. Disable it per project with:
+
+```yaml
+coot:
+  enabled: false
+```
+
 This means a user may install software in:
 
 - a workstation conda environment
@@ -52,7 +70,7 @@ As long as the required commands resolve, the deployment is compatible with the 
 
 ### 1. Install the agent
 
-Follow the package setup documented by the repository for `crystal-agent` itself.
+Follow the package setup documented by the repository for `xtal-agent` itself.
 
 ### 2. Install external software from official sources
 
@@ -87,7 +105,7 @@ Before workflow execution, run:
 
 ```bash
 source xtal-agent/env/activate.sh
-crystal-agent check-env
+xtal-agent check-env
 ```
 
 If a required command is missing, fix the user environment first.
@@ -102,7 +120,7 @@ If a command listed by `check-env` does not resolve:
 
 1. verify the corresponding third-party software is actually installed
 2. verify the command is exposed on `PATH` or by the user's activation process
-3. rerun `crystal-agent check-env`
+3. rerun `xtal-agent check-env`
 4. only continue when the environment check confirms the required commands are available
 
 If a bundled prediction skill fails due to missing model/database/runtime configuration:

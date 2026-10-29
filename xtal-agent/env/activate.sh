@@ -1,39 +1,56 @@
 #!/bin/bash
-# ============================================================
-# Crystal Agent 环境激活脚本
-# 用法: source activate.sh
-# ============================================================
+# xtal-agent environment activation
+# Usage: source xtal-agent/env/activate.sh
 
-BASE="${CRYSTAL_AGENT_BASE:-}"
-APPS="${CRYSTAL_AGENT_APPS:-${BASE:+$BASE/apps}}"
-BIN="${CRYSTAL_AGENT_BIN:-${BASE:+$BASE/bin}}"
+XTAL_AGENT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+export XTAL_AGENT_BASE="${XTAL_AGENT_BASE:-$XTAL_AGENT_DIR}"
 
-# Conda 环境
+# Site-local overrides (machine specific paths; never shipped with releases).
+# Provides PHENIX_ENV, CCP4_SETUP and any local PATH entries.
+SITE_LOCAL="$XTAL_AGENT_BASE/xtal-agent/env/site.local.sh"
+if [ -f "$SITE_LOCAL" ]; then
+    . "$SITE_LOCAL"
+fi
+
+# Conda environment.
+# Prefer the renamed environment; fall back to the legacy name until an
+# administrator renames the legacy conda environment.
 CONDA_BASE=$(conda info --base 2>/dev/null)
 if [ -n "$CONDA_BASE" ] && [ -f "$CONDA_BASE/etc/profile.d/conda.sh" ]; then
-    source "$CONDA_BASE/etc/profile.d/conda.sh"
-    conda activate crystal-agent
+    . "$CONDA_BASE/etc/profile.d/conda.sh"
+    for _xtal_env in xtal-agent crystal-agent; do
+        conda activate "$_xtal_env" 2>/dev/null && break
+    done
+    unset _xtal_env
 fi
 
-# Optional external crystallography environment hooks.
-# Public deployments are expected to provide these through environment variables.
-PHENIX_ENV="${PHENIX_ENV:-}"
-if [ -f "$PHENIX_ENV" ]; then
-    source "$PHENIX_ENV"
+# Phenix (path supplied by site.local.sh or the caller's environment)
+if [ -n "${PHENIX_ENV:-}" ] && [ -f "$PHENIX_ENV" ]; then
+    . "$PHENIX_ENV"
 fi
 
-# CCP4 9
-CCP4_SETUP="${CCP4_SETUP:-${APPS:+$APPS/ccp4-9/ccp4-9/bin/ccp4.setup-sh}}"
-if [ -f "$CCP4_SETUP" ]; then
-    source "$CCP4_SETUP"
+# DIALS (bundled with Phenix)
+if [ -n "${PHENIX:-}" ] && [ -d "$PHENIX/phenix_bin" ]; then
+    export PATH="$PHENIX/phenix_bin:$PATH"
 fi
 
-# XDS
-if [ -n "$BIN" ] && [ -d "$BIN" ]; then
-    export PATH="$BIN:$PATH"
+# CCP4 (path supplied by site.local.sh or the caller's environment)
+if [ -n "${CCP4_SETUP:-}" ] && [ -f "$CCP4_SETUP" ]; then
+    . "$CCP4_SETUP"
+    export XTAL_AGENT_CCP4_SETUP="${XTAL_AGENT_CCP4_SETUP:-$CCP4_SETUP}"
 fi
 
-# 验证
-if command -v crystal-agent &>/dev/null; then
-    crystal-agent check-env 2>/dev/null || true
+# Explicit binary overrides (optional; PATH is still the default contract)
+if [ -n "${PHENIX:-}" ] && [ -x "$PHENIX/phenix_bin/phenix.refine" ]; then
+    export XTAL_AGENT_PHENIX_BIN="${XTAL_AGENT_PHENIX_BIN:-$PHENIX/phenix_bin/phenix.refine}"
+fi
+if [ -n "${COOT_BIN:-}" ]; then
+    export XTAL_AGENT_COOT_BIN="${XTAL_AGENT_COOT_BIN:-$COOT_BIN}"
+fi
+
+# Bundled launchers (xtal-agent, adxv, ...)
+export PATH="$XTAL_AGENT_BASE/xtal-agent/env:$PATH"
+
+if command -v xtal-agent &>/dev/null; then
+    xtal-agent check-env 2>/dev/null || true
 fi

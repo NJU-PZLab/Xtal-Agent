@@ -1,5 +1,5 @@
-from crystal_agent.report import render_report
-from crystal_agent.schemas import RankedCandidate
+from xtal_agent.report import render_report
+from xtal_agent.schemas import RankedCandidate
 
 
 def test_render_report_contains_ranked_candidate():

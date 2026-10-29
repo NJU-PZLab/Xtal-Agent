@@ -28,7 +28,7 @@ Why it belongs in documentation:
 ### `xtal-agent/README.md`
 
 Role:
-- Package-level introduction to the installable `crystal-agent`
+- Package-level introduction to the installable `xtal-agent`
 
 Documents:
 - project scope
@@ -37,7 +37,7 @@ Documents:
 - basic commands
 
 Publication note:
-- this is the package-level README for the installable `crystal-agent` Python package, not the repository-wide publication README
+- this is the package-level README for the installable `xtal-agent` Python package, not the repository-wide publication README
 
 ### `xtal-agent/AGENTS.md`
 
@@ -60,8 +60,8 @@ Why it is important for publication:
   - `skills/*.md`
   - `xtal-agent/skills/phase*.md`
   - bundled workflow skill assets when needed for execution completeness
-  - `crystal_agent.architecture`
-  - `crystal_agent.step_tracker`
+  - `xtal_agent.architecture`
+  - `xtal_agent.step_tracker`
 
 ## Publication Package Deployment Documentation
 
@@ -85,7 +85,7 @@ Role:
 Why it belongs in documentation:
 - it explains the supported public deployment model
 - it removes any assumption that original local paths are public requirements
-- it defines the environment-check flow using `crystal-agent check-env`
+- it defines the environment-check flow using `xtal-agent check-env`
 
 ## Documentation Trees Included In The Agent Surface
 
@@ -95,7 +95,7 @@ Role:
 - Architecture-scanned documentation tree
 
 Why it belongs:
-- `xtal-agent/src/crystal_agent/architecture.py` scans `docs/` when collecting markdown for architecture audit coverage
+- `xtal-agent/src/xtal_agent/architecture.py` scans `docs/` when collecting markdown for architecture audit coverage
 
 ### `example/`
 

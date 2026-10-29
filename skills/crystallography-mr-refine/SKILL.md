@@ -11,9 +11,9 @@ For current work, immediately use the specific phase skill:
 
 | Need | Current skill | Code call |
 |---|---|---|
-| Search model, MSA, AF2/AF3, pLDDT, Matthews | `crystallography-phase3-model-preparation` | `crystal-agent phase-guide phase3` |
-| Phaser and ASU copy-number testing | `crystallography-phase4-molecular-replacement` | `crystal-agent phase-guide phase4` |
-| Phenix/Refmac refinement, waters, TLS, RSCC | `crystallography-phase5-refinement` | `crystal-agent phase-guide phase5` |
-| Final MolProbity, comparison, final archive | `crystallography-phase6-final-validation` | `crystal-agent phase-guide phase6` |
+| Search model, MSA, AF2/AF3, pLDDT, Matthews | `crystallography-phase3-model-preparation` | `xtal-agent phase-guide phase3` |
+| Phaser and ASU copy-number testing | `crystallography-phase4-molecular-replacement` | `xtal-agent phase-guide phase4` |
+| Phenix/Refmac refinement, waters, TLS, RSCC | `crystallography-phase5-refinement` | `xtal-agent phase-guide phase5` |
+| Final MolProbity, comparison, final archive | `crystallography-phase6-final-validation` | `xtal-agent phase-guide phase6` |
 
-Do not continue from this wrapper. The canonical workflows now live in the phase-specific skills and `crystal-agent phase-guide phase<N>`.
+Do not continue from this wrapper. The canonical workflows now live in the phase-specific skills and `xtal-agent phase-guide phase<N>`.

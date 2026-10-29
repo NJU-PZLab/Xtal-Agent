@@ -3,9 +3,9 @@ import json
 
 import pytest
 
-from crystal_agent.decision_engine import FixAction, FixOutcome, FixResult
-from crystal_agent.phase_orchestrator import PhaseResult, run_phase
-from crystal_agent.phase_orchestrator import apply_idxref_fix, parse_xds_inp
+from xtal_agent.decision_engine import FixAction, FixOutcome, FixResult
+from xtal_agent.phase_orchestrator import PhaseResult, run_phase
+from xtal_agent.phase_orchestrator import apply_idxref_fix, parse_xds_inp
 
 
 def test_run_phase_rejects_unknown_phase(tmp_path: Path):
@@ -95,7 +95,7 @@ def test_phase2_sg_conflict_records_retry_decision(tmp_path: Path):
 
 
 def test_phase3_records_prediction_tool_and_matthews(tmp_path: Path):
-    (tmp_path / "manifest.yaml").write_text("workflow_mode: simple\n")
+    (tmp_path / "manifest.yaml").write_text("workflow_mode: simple\nvision:\n  enabled: false\n")
     (tmp_path / "rcsb.fasta").write_text(">protein\nAAAA\n>rna\nAAAAAA\n")
     (tmp_path / "cell_sg.txt").write_text("1000000 1 50000")
 
@@ -120,7 +120,7 @@ def test_phase4_records_phaser_copy_selection_and_troubleshooting(tmp_path: Path
 
 
 def test_modelcraft_failure_is_not_a_stop_and_writes_attempt_marker(tmp_path: Path, monkeypatch):
-    from crystal_agent import phase_orchestrator as po
+    from xtal_agent import phase_orchestrator as po
 
     (tmp_path / "refmac_r4.pdb").write_text("MODEL\n")
     (tmp_path / "ctruncate_free.mtz").write_text("data\n")

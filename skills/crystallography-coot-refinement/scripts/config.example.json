@@ -1,0 +1,12 @@
+{
+  "workdir": "strategy_job",
+  "pdb": "input.pdb",
+  "mtz": "data.mtz",
+  "resolution": 2.0,
+  "ccp4_setup": "/path/to/ccp4.setup-sh",
+  "strategy": "auto",
+  "phenix": {
+    "labels": "F,SIGF",
+    "rfree_label": "FreeR_flag"
+  }
+}

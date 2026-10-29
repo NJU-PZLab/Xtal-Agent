@@ -8,18 +8,18 @@ description: Use when solving a crystal structure from raw images or validated M
 ## Required First Calls
 
 ```bash
-source crystal-agent/env/activate.sh
-crystal-agent check-env
-crystal-agent enforce-checkpoint <project_dir>
-crystal-agent resume-barrier <project_dir>
+source xtal-agent/env/activate.sh
+xtal-agent check-env
+xtal-agent enforce-checkpoint <project_dir>
+xtal-agent resume-barrier <project_dir>
 ```
-crystal-agent validate-manifest <project_dir>/manifest.yaml
-crystal-agent backup-targets <repo_root>
+xtal-agent validate-manifest <project_dir>/manifest.yaml
+xtal-agent backup-targets <repo_root>
 ```
 
 If the manifest lacks `workflow_mode: simple` or `workflow_mode: expert`, stop and ask the user to set it. Do not infer workflow mode.
 
-If `workflow_mode: expert`, do not use autonomous `run-phase`. Before each guarded step, ask the user to approve that exact step, record it with `crystal-agent expert-approve <project_dir> <step_name> --reason "<why approved>"`, then use `guard --before`, run only the approved step, and close with `guard --after`. Do not continue if `verify-steps` reports an Expert Mode Audit failure.
+If `workflow_mode: expert`, do not use autonomous `run-phase`. Before each guarded step, ask the user to approve that exact step, record it with `xtal-agent expert-approve <project_dir> <step_name> --reason "<why approved>"`, then use `guard --before`, run only the approved step, and close with `guard --after`. Do not continue if `verify-steps` reports an Expert Mode Audit failure.
 
 ## Inputs Gate
 
@@ -40,17 +40,17 @@ Run phases in order. Before each phase, call the code-backed guide.
 
 | Phase | Skill | Code call |
 |---|---|---|
-| 1 Raw processing | `crystallography-phase1-xds-processing` | `crystal-agent phase-guide phase1` |
-| 2 Scaling validation | `crystallography-phase2-aimless-validation` | `crystal-agent phase-guide phase2` |
-| 3 Model prep | `crystallography-phase3-model-preparation` plus AF skills | `crystal-agent phase-guide phase3` |
-| 4 MR | `crystallography-phase4-molecular-replacement` | `crystal-agent phase-guide phase4` |
-| 5 Refinement | `crystallography-phase5-refinement` | `crystal-agent phase-guide phase5` |
-| 6 Final validation | `crystallography-phase6-final-validation` | `crystal-agent phase-guide phase6` |
+| 1 Raw processing | `crystallography-phase1-xds-processing` | `xtal-agent phase-guide phase1` |
+| 2 Scaling validation | `crystallography-phase2-aimless-validation` | `xtal-agent phase-guide phase2` |
+| 3 Model prep | `crystallography-phase3-model-preparation` plus AF skills | `xtal-agent phase-guide phase3` |
+| 4 MR | `crystallography-phase4-molecular-replacement` | `xtal-agent phase-guide phase4` |
+| 5 Refinement | `crystallography-phase5-refinement` | `xtal-agent phase-guide phase5` |
+| 6 Final validation | `crystallography-phase6-final-validation` | `xtal-agent phase-guide phase6` |
 
 After every step:
 
 ```bash
-crystal-agent verify-steps <project_dir>
+xtal-agent verify-steps <project_dir>
 ```
 
 If any check fails, stop and fix that step. Do not continue to the next phase.
@@ -58,8 +58,8 @@ If any check fails, stop and fix that step. Do not continue to the next phase.
 For concrete operation syntax, call code templates. Do not write commands from memory:
 
 ```bash
-crystal-agent command-template <operation>
-crystal-agent list-command-templates
+xtal-agent command-template <operation>
+xtal-agent list-command-templates
 ```
 
 ## Non-Negotiable Rules
@@ -78,8 +78,8 @@ Before reporting completion:
 
 ```bash
 pytest -q
-crystal-agent audit-architecture <repo_root>
-crystal-agent verify-steps <project_dir>
+xtal-agent audit-architecture <repo_root>
+xtal-agent verify-steps <project_dir>
 ```
 
 If the project is not a code/docs edit, omit `pytest -q` but still run `verify-steps`.

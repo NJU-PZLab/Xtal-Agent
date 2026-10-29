@@ -1,4 +1,4 @@
-from crystal_agent.refinement_runner import parse_refinement_log
+from xtal_agent.refinement_runner import parse_refinement_log
 
 
 def test_parse_refinement_log_extracts_all_metrics():

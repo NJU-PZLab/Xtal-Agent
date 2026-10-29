@@ -1,4 +1,4 @@
-from crystal_agent.parsers import parse_phaser_log, parse_refinement_log
+from xtal_agent.parsers import parse_phaser_log, parse_refinement_log
 
 
 def test_parse_phaser_log_extracts_tfz_llg_and_clashes():

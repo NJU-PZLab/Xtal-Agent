@@ -8,32 +8,32 @@ description: Use when refining MR solutions with Phenix or Refmac, generating Fr
 ## Required Code Call
 
 ```bash
-source crystal-agent/env/activate.sh
-crystal-agent enforce-checkpoint <project_dir>
-crystal-agent phase-guide phase5
+source xtal-agent/env/activate.sh
+xtal-agent enforce-checkpoint <project_dir>
+xtal-agent phase-guide phase5
 ```
 
 ## Execution Gate
 
 ```bash
-crystal-agent guard <project_dir> --before phase5_seed
-crystal-agent verify-steps <project_dir>
-crystal-agent guard <project_dir> --after phase5_seed
+xtal-agent guard <project_dir> --before phase5_seed
+xtal-agent verify-steps <project_dir>
+xtal-agent guard <project_dir> --after phase5_seed
 ```
 
 ## Required Command Templates
 
 ```bash
-crystal-agent command-template phenix-seed
-crystal-agent command-template phenix-iterative-refine
-crystal-agent command-template ctruncate
-crystal-agent command-template freerflag
-crystal-agent command-template refmac-jelly
-crystal-agent command-template refmac-free
-crystal-agent command-template rscc
-crystal-agent command-template molprobity-final
-crystal-agent command-template mtzdump-resolution
-crystal-agent naming-guide
+xtal-agent command-template phenix-seed
+xtal-agent command-template phenix-iterative-refine
+xtal-agent command-template ctruncate
+xtal-agent command-template freerflag
+xtal-agent command-template refmac-jelly
+xtal-agent command-template refmac-free
+xtal-agent command-template rscc
+xtal-agent command-template molprobity-final
+xtal-agent command-template mtzdump-resolution
+xtal-agent naming-guide
 ```
 
 ## Mandatory Minimum
@@ -42,7 +42,7 @@ crystal-agent naming-guide
 - Run 4+ Refmac rounds.
 - Refmac rounds 1-2 use jelly-body restraints.
 - Refmac rounds 3+ run without jelly.
-- Continue the winning branch until Rfree is flat for 2 consecutive rounds. `detect_rfree_plateau()` from `crystal_agent.decision_engine` enforces: if round N > round N-1 and round N+1 >= round N-1, plateau reached.
+- Continue the winning branch until Rfree is flat for 2 consecutive rounds. `detect_rfree_plateau()` from `xtal_agent.decision_engine` enforces: if round N > round N-1 and round N+1 >= round N-1, plateau reached.
 - If Rfree > 0.35 at plateau: first switch software (Phenix ↔ Refmac). If still > 0.35 after both tried, stop — the MR solution is likely wrong. `verify-steps` flags this via `_check_high_rfree_diagnosis`.
 - Before starting refinement, check `xtriage.log` for twin laws with `extract_twin_laws_from_xtriage()`. If twin laws exist, try `command-template twin-refine` first before software switch.
 - Extra rounds are allowed. Fewer than the mandatory minimum rounds fail verification. If interrupted, resume with the next numeric round and do not renumber existing files.
@@ -57,7 +57,7 @@ Phenix round 2 and later logs must record `INPUT_PDB=phenix_r<N-1>` and `INPUT_M
 
 - Fit waters with `ordered_solvent=true` or Refmac `solvent yes` until water count and Rfree plateau.
 - Run TLS optimization and keep TLS only if Rfree drops.
-- Use `crystal-agent command-template rscc` for real-space correlation.
+- Use `xtal-agent command-template rscc` for real-space correlation.
 - Flag residues with B-factor `> mean + 2 sigma` and RSCC `< 0.7`.
 - Do not auto-delete flagged residues; report them for COOT inspection.
 - Run final MolProbity after waters and TLS.
@@ -66,3 +66,27 @@ Phenix round 2 and later logs must record `INPUT_PDB=phenix_r<N-1>` and `INPUT_M
 ## Outputs
 
 `seed_data.mtz`, `phenix_r*.pdb`, companion MTZ files, `ctruncate_free.mtz`, `refmac_r*.pdb`, `water_refine*.pdb`, `*tls*.log`, `rsc.log`.
+
+## COOT post-refinement module (optional, enabled by default)
+
+After the refinement R-free plateaus and the Modelcraft branch has been
+adjudicated, invoke the bundled COOT module:
+
+```bash
+xtal-agent coot-optimize <project_dir>
+```
+
+or let Phase 5 call `run_coot_optimization()` automatically. The module is
+implemented in `xtal_agent.coot_runner` and delegates to
+`skills/crystallography-coot-refinement/scripts/run_strategy.py` in headless
+COOT. It:
+
+1. identifies rotamer outliers and unmodelled solvent density with
+   `phenix.molprobity`;
+2. corrects rotamers, performs density-guided real-space fitting, and adds
+   ordered waters with scripted COOT sessions;
+3. re-refines and re-validates the model.
+
+Acceptance: keep the COOT model only when R-free does not increase and
+MolProbity geometry improves; otherwise keep the pre-COOT model and record
+`coot_strategy/coot_result.json` with the rejection reason.

@@ -3,14 +3,14 @@
 ## Required Code Call
 
 ```bash
-crystal-agent phase-guide phase2
+xtal-agent phase-guide phase2
 ```
 
 ## Required Command Templates
 
-Use `crystal-agent command-template pointless`, `aimless-scale`, `mtzdump-resolution`, and `xtriage`. Do not invent these commands from memory.
+Use `xtal-agent command-template pointless`, `aimless-scale`, `mtzdump-resolution`, and `xtriage`. Do not invent these commands from memory.
 
-Wrap the phase with `crystal-agent guard <project_dir> --before phase2_pointless` and `--after phase2_pointless`. Run `crystal-agent verify-steps <project_dir>` after every step.
+Wrap the phase with `xtal-agent guard <project_dir> --before phase2_pointless` and `--after phase2_pointless`. Run `xtal-agent verify-steps <project_dir>` after every step.
 
 ## Mandatory Steps
 

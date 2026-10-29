@@ -2,8 +2,8 @@ from pathlib import Path
 
 import pytest
 
-from crystal_agent.manifest import load_manifest
-from crystal_agent.schemas import DiffractionType, ModelType
+from xtal_agent.manifest import load_manifest
+from xtal_agent.schemas import DiffractionType, ModelType
 
 
 def test_load_valid_manifest(tmp_path: Path):
@@ -17,6 +17,8 @@ def test_load_valid_manifest(tmp_path: Path):
         """
 project_id: example_project
 workflow_mode: simple
+vision:
+  enabled: false
 inputs:
   diffraction:
     type: raw_images
@@ -60,6 +62,8 @@ def test_load_manifest_rejects_missing_sequence(tmp_path: Path):
         """
 project_id: bad_project
 workflow_mode: expert
+vision:
+  enabled: false
 inputs:
   diffraction:
     type: raw_images
@@ -91,6 +95,8 @@ def test_load_manifest_requires_workflow_mode(tmp_path: Path):
     manifest_path.write_text(
         """
 project_id: example_project
+vision:
+  enabled: false
 inputs:
   diffraction:
     type: raw_images
@@ -123,6 +129,8 @@ def test_load_manifest_accepts_expert_workflow_mode(tmp_path: Path):
         """
 project_id: expert_project
 workflow_mode: expert
+vision:
+  enabled: false
 inputs:
   diffraction:
     type: raw_images
@@ -143,3 +151,57 @@ policy:
     manifest = load_manifest(manifest_path)
 
     assert manifest.workflow_mode.value == "expert"
+
+
+def test_load_manifest_requires_vision_field(tmp_path: Path):
+    project = tmp_path / "project"
+    (project / "input" / "diffraction").mkdir(parents=True)
+    (project / "input" / "models").mkdir(parents=True)
+    (project / "input" / "sequence.fasta").write_text(">target\nACDE\n")
+    (project / "input" / "models" / "af_model.pdb").write_text("MODEL        1\nENDMDL\n")
+    manifest_path = project / "manifest.yaml"
+    manifest_path.write_text(
+        """
+project_id: no_vision_project
+workflow_mode: simple
+inputs:
+  diffraction:
+    type: raw_images
+    path: input/diffraction/
+  sequence:
+    path: input/sequence.fasta
+  models:
+    - type: alphafold
+      path: input/models/af_model.pdb
+""".strip()
+    )
+    with pytest.raises(ValueError, match="Ask the user"):
+        load_manifest(manifest_path)
+
+
+def test_load_manifest_accepts_vision_enabled_true(tmp_path: Path):
+    project = tmp_path / "project"
+    (project / "input" / "diffraction").mkdir(parents=True)
+    (project / "input" / "models").mkdir(parents=True)
+    (project / "input" / "sequence.fasta").write_text(">target\nACDE\n")
+    (project / "input" / "models" / "af_model.pdb").write_text("MODEL        1\nENDMDL\n")
+    manifest_path = project / "manifest.yaml"
+    manifest_path.write_text(
+        """
+project_id: vision_on_project
+workflow_mode: simple
+vision:
+  enabled: true
+inputs:
+  diffraction:
+    type: raw_images
+    path: input/diffraction/
+  sequence:
+    path: input/sequence.fasta
+  models:
+    - type: alphafold
+      path: input/models/af_model.pdb
+""".strip()
+    )
+    manifest = load_manifest(manifest_path)
+    assert manifest.vision.enabled is True

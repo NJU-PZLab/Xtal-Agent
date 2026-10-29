@@ -3,8 +3,8 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "crystal-agent"
-version = "0.1.0"
+name = "xtal-agent"
+version = "0.2.0"
 description = "Local MVP for AI-assisted crystallography workflow automation"
 requires-python = ">=3.11,<3.12"
 dependencies = [
@@ -26,15 +26,22 @@ dependencies = [
 dev = [
   "pytest>=8.0",
 ]
+vision = [
+  "pillow>=10.0",
+  "matplotlib>=3.8",
+  "fabio>=2023.10",
+  "h5py>=3.10",
+  "hdf5plugin>=4.0",
+]
 
 [project.scripts]
-crystal-agent = "crystal_agent.cli:app"
+xtal-agent = "xtal_agent.cli:app"
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.setuptools.package-data]
-crystal_agent = []
+xtal_agent = []
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

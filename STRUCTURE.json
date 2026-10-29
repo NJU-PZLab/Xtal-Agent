@@ -1,28 +1,31 @@
 {
-  "name": "crystal-agent-publication-package",
+  "name": "xtal-agent-publication-package",
   "source_root": ".",
   "structure_basis": [
     "xtal-agent/pyproject.toml",
     "AGENTS.md",
     "xtal-agent/README.md",
     "docs/agent_architecture_coverage_audit.md",
-    "xtal-agent/src/crystal_agent/cli.py",
-    "xtal-agent/src/crystal_agent/architecture.py"
+    "xtal-agent/src/xtal_agent/cli.py",
+    "xtal-agent/src/xtal_agent/architecture.py"
   ],
   "sections": {
     "code": {
       "in_repo": [
         "xtal-agent/pyproject.toml",
         "xtal-agent/env/",
-        "xtal-agent/src/crystal_agent/",
+        "xtal-agent/src/xtal_agent/",
         "xtal-agent/tests/",
-        "xtal-agent/workflows/"
+        "xtal-agent/workflows/",
+        "xtal-agent/src/xtal_agent/coot_runner.py",
+        "xtal-agent/src/xtal_agent/vision_schema.py",
+        "xtal-agent/src/xtal_agent/vision_render.py"
       ]
     },
     "templates": {
       "in_repo": [
         "xtal-agent/templates/report.html.j2",
-        "xtal-agent/src/crystal_agent/architecture.py"
+        "xtal-agent/src/xtal_agent/architecture.py"
       ]
     },
     "documentation": {
@@ -42,7 +45,8 @@
     "skills": {
       "in_repo": [
         "skills/",
-        "xtal-agent/skills/"
+        "xtal-agent/skills/",
+        "skills/crystallography-coot-refinement/"
       ],
       "bundled": [
         {

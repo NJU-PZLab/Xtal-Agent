@@ -1,4 +1,4 @@
-from crystal_agent.decision_engine import (
+from xtal_agent.decision_engine import (
     DataRangeCandidate,
     DataRangeMosaicity,
     FixAction,

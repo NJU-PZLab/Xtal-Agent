@@ -18,14 +18,20 @@ These live under `skills/` and are named directly in `AGENTS.md` and related doc
 
 - `skills/crystallography-mainline/SKILL.md`
 - `skills/crystallography-phase1-xds-processing/SKILL.md`
+- `skills/crystallography-autoproc/SKILL.md`
+- `skills/crystallography-phase0-image-inspection/SKILL.md`
 - `skills/crystallography-phase2-aimless-validation/SKILL.md`
 - `skills/crystallography-phase3-model-preparation/SKILL.md`
 - `skills/crystallography-phase4-molecular-replacement/SKILL.md`
 - `skills/crystallography-phase5-refinement/SKILL.md`
+- `skills/crystallography-coot-refinement/SKILL.md`
 - `skills/crystallography-phase6-final-validation/SKILL.md`
 - `skills/crystallography-ligand-generation/SKILL.md`
 
 Why they belong:
+- `crystallography-coot-refinement` provides the scripted COOT
+  post-refinement module (rotamer correction, real-space fitting, ordered
+  waters) invoked by `xtal_agent.coot_runner`
 - `AGENTS.md` uses them in the Skill Routing Table
 - `docs/agent_architecture_coverage_audit.md` treats `skills/*.md` as task-specific workflow instructions
 - `architecture.py` scans the `skills/` tree during architecture-audit text collection

@@ -7,8 +7,8 @@ This audit maps mandatory rules from the previous `AGENTS.md` into the simplifie
 - `AGENTS.md` now holds the hard gates, workflow mode requirements, thresholds, phase checklist, diagnostic triggers, and maintenance rules.
 - `skills/*.md` now hold task-specific workflow instructions and required code calls.
 - `xtal-agent/skills/phase*.md` mirror phase-level checklists for local reference.
-- `crystal_agent.architecture` provides `backup-targets`, `phase-guide`, and `audit-architecture` command support.
-- `crystal_agent.step_tracker` continues to enforce project step completion through `verify-steps` and `guard`.
+- `xtal_agent.architecture` provides `backup-targets`, `phase-guide`, and `audit-architecture` command support.
+- `xtal_agent.step_tracker` continues to enforce project step completion through `verify-steps` and `guard`.
 
 ## Mandatory Rule Mapping
 
@@ -82,4 +82,4 @@ The older `crystallography-mr-refine` skill contained wording that restarted eve
 - R2 and later rounds must use the previous round PDB and companion MTZ.
 - Cross-software branches start from the best model plus its companion MTZ and generate fresh flags only for that new branch.
 
-This rule is now present in `AGENTS.md`, `skills/crystallography-mr-refine/SKILL.md`, `xtal-agent/skills/phase5_refinement.md`, and `crystal_agent.architecture.PHASE_GUIDES`.
+This rule is now present in `AGENTS.md`, `skills/crystallography-mr-refine/SKILL.md`, `xtal-agent/skills/phase5_refinement.md`, and `xtal_agent.architecture.PHASE_GUIDES`.

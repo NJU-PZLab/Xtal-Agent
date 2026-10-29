@@ -1,0 +1,10 @@
+#!/usr/bin/env python
+# xtal-agent console launcher.
+# Used directly until the package is reinstalled by an administrator
+# (which regenerates the proper console script inside the conda env).
+import sys
+
+from xtal_agent.cli import app
+
+if __name__ == "__main__":
+    sys.exit(app())

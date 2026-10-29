@@ -8,9 +8,9 @@ description: Use when processing raw diffraction images with XDS, generating XDS
 ## Required Code Call
 
 ```bash
-source crystal-agent/env/activate.sh
-crystal-agent enforce-checkpoint <project_dir>
-crystal-agent phase-guide phase1
+source xtal-agent/env/activate.sh
+xtal-agent enforce-checkpoint <project_dir>
+xtal-agent phase-guide phase1
 ```
 
 Use this skill before any raw-image processing. Do not write a custom workflow from memory.
@@ -20,30 +20,30 @@ Use this skill before any raw-image processing. Do not write a custom workflow f
 Call these code-backed templates for concrete commands:
 
 ```bash
-crystal-agent command-template xds-generate-inp
-crystal-agent command-template xds-run
-crystal-agent command-template dials-import
-crystal-agent command-template dials-find-spots
-crystal-agent command-template dials-index
-crystal-agent command-template dials-integrate
-crystal-agent command-template dials-scale
-crystal-agent command-template dials-export-mtz
-crystal-agent command-template xia2-fallback
+xtal-agent command-template xds-generate-inp
+xtal-agent command-template xds-run
+xtal-agent command-template dials-import
+xtal-agent command-template dials-find-spots
+xtal-agent command-template dials-index
+xtal-agent command-template dials-integrate
+xtal-agent command-template dials-scale
+xtal-agent command-template dials-export-mtz
+xtal-agent command-template xia2-fallback
 ```
 
 ## Execution Gate
 
 ```bash
-crystal-agent guard <project_dir> --before phase1_correct_lp
-crystal-agent verify-steps <project_dir>
-crystal-agent guard <project_dir> --after phase1_correct_lp
+xtal-agent guard <project_dir> --before phase1_correct_lp
+xtal-agent verify-steps <project_dir>
+xtal-agent guard <project_dir> --after phase1_correct_lp
 ```
 
 Run `verify-steps` after every meaningful step. Stop on failure.
 
 ## Mandatory Rules
 
-- Generate `XDS.INP` using `crystal-agent command-template xds-generate-inp`.
+- Generate `XDS.INP` using `xtal-agent command-template xds-generate-inp`.
 - XDS `JOB` must include `IDXREF`; never remove it.
 - Round 1 uses `SPACE_GROUP_NUMBER=0`.
 - Feed SG and cell from `CORRECT.LP` back into `XDS.INP` and rerun.

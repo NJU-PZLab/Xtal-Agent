@@ -12,17 +12,17 @@ Role:
 - Jinja2 template used to render the validation HTML report
 
 Why this belongs in templates:
-- `xtal-agent/src/crystal_agent/report.py` loads templates from the package-adjacent `templates` directory
+- `xtal-agent/src/xtal_agent/report.py` loads templates from the package-adjacent `templates` directory
 - the template name is referenced explicitly as `report.html.j2`
 
 ## Code-Backed Template Registry
 
-### `xtal-agent/src/crystal_agent/architecture.py`
+### `xtal-agent/src/xtal_agent/architecture.py`
 
 Role:
 - Stores the `COMMAND_TEMPLATES` registry used by:
-  - `crystal-agent command-template <operation>`
-  - `crystal-agent list-command-templates`
+  - `xtal-agent command-template <operation>`
+  - `xtal-agent list-command-templates`
 
 Important publication note:
 - These command templates are part of the agent's template system, but they are defined in code rather than as standalone files.
@@ -44,7 +44,7 @@ Representative command-template families defined there include:
 xtal-agent/
 ├── templates/
 │   └── report.html.j2
-└── src/crystal_agent/architecture.py  # code-backed command-template registry
+└── src/xtal_agent/architecture.py  # code-backed command-template registry
 ```
 
 Everything in this section is in-repo.

@@ -22,7 +22,7 @@ curl -s "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/<name>/property
 2. Generate coordinates and restraints with the code-backed template.
 
 ```bash
-crystal-agent command-template ligand-elbow
+xtal-agent command-template ligand-elbow
 ```
 
 3. Verify atom count, formal charge, stereochemistry, and chiral centers.

@@ -3,14 +3,14 @@
 ## Required Code Call
 
 ```bash
-crystal-agent phase-guide phase3
+xtal-agent phase-guide phase3
 ```
 
 ## Required Command Templates
 
-Use `crystal-agent command-template matthews` and `ligand-elbow` where applicable. Use AF skills for MSA/AF2/AF3 command syntax.
+Use `xtal-agent command-template matthews` and `ligand-elbow` where applicable. Use AF skills for MSA/AF2/AF3 command syntax.
 
-Wrap the phase with `crystal-agent guard <project_dir> --before phase3_msa` and `--after phase3_msa`. Run `crystal-agent verify-steps <project_dir>` after every step.
+Wrap the phase with `xtal-agent guard <project_dir> --before phase3_msa` and `--after phase3_msa`. Run `xtal-agent verify-steps <project_dir>` after every step.
 
 ## Mandatory Decisions
 

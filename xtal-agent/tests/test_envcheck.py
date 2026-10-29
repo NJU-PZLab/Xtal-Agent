@@ -1,4 +1,4 @@
-from crystal_agent.envcheck import check_command, check_required_commands
+from xtal_agent.envcheck import check_command, check_required_commands
 
 
 def test_check_required_commands_includes_nvidia_smi_by_default():

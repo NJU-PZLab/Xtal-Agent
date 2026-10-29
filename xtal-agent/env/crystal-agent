@@ -1,0 +1,5 @@
+#!/bin/bash
+# Transitional shim: the command was renamed from `crystal-agent` to `xtal-agent`.
+# Remove this file once the package has been reinstalled under the new name.
+echo "[crystal-agent] renamed to 'xtal-agent'; forwarding..." >&2
+exec "$(dirname "$0")/xtal-agent" "$@"

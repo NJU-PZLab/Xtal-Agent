@@ -8,24 +8,24 @@ description: Use when preparing MR search models, generating MSAs, choosing AF2 
 ## Required Code Call
 
 ```bash
-source crystal-agent/env/activate.sh
-crystal-agent enforce-checkpoint <project_dir>
-crystal-agent phase-guide phase3
+source xtal-agent/env/activate.sh
+xtal-agent enforce-checkpoint <project_dir>
+xtal-agent phase-guide phase3
 ```
 
 ## Execution Gate
 
 ```bash
-crystal-agent guard <project_dir> --before phase3_msa
-crystal-agent verify-steps <project_dir>
-crystal-agent guard <project_dir> --after phase3_msa
+xtal-agent guard <project_dir> --before phase3_msa
+xtal-agent verify-steps <project_dir>
+xtal-agent guard <project_dir> --after phase3_msa
 ```
 
 ## Required Command Templates
 
 ```bash
-crystal-agent command-template matthews
-crystal-agent command-template ligand-elbow
+xtal-agent command-template matthews
+xtal-agent command-template ligand-elbow
 ```
 
 Use AF skill code for MSA/AF2/AF3 execution. Do not invent MSA, AF2, or AF3 command lines when the corresponding AF skill provides them.

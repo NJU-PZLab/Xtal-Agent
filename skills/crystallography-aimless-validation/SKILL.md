@@ -16,8 +16,8 @@ crystallography-phase2-aimless-validation
 Then run:
 
 ```bash
-source crystal-agent/env/activate.sh
-crystal-agent phase-guide phase2
+source xtal-agent/env/activate.sh
+xtal-agent phase-guide phase2
 ```
 
-Do not continue from this wrapper. The canonical Phase 2 workflow now lives in `skills/crystallography-phase2-aimless-validation/SKILL.md` and `crystal-agent phase-guide phase2`.
+Do not continue from this wrapper. The canonical Phase 2 workflow now lives in `skills/crystallography-phase2-aimless-validation/SKILL.md` and `xtal-agent phase-guide phase2`.

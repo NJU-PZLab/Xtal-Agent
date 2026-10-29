@@ -1,5 +1,5 @@
-from crystal_agent.ranking import rank_candidates, score_candidate
-from crystal_agent.schemas import CandidateResult
+from xtal_agent.ranking import rank_candidates, score_candidate
+from xtal_agent.schemas import CandidateResult
 
 
 def test_score_candidate_rewards_good_mr_and_refinement():

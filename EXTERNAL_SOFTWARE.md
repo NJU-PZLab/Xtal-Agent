@@ -4,13 +4,13 @@
 
 This package does not redistribute any third-party crystallography software.
 
-It only documents which external software families the `crystal-agent` workflow expects, where users should obtain them, and how those tools should be integrated into a user-managed environment.
+It only documents which external software families the `xtal-agent` workflow expects, where users should obtain them, and how those tools should be integrated into a user-managed environment.
 
 ## Publication Boundary
 
 This repository publishes:
 
-- the `crystal-agent` code
+- the `xtal-agent` code
 - workflow documentation
 - skill and deployment documentation
 - integration instructions for external software
@@ -46,6 +46,7 @@ The complete dependency surface has two groups:
 
 Purpose in workflow:
 - diffraction data import, spot finding, indexing, integration, scaling, and MTZ export when the DIALS path is used
+- optional fallback renderer for the vision module when adxv is not available
 
 Requirement level:
 - required for workflows that need the DIALS fallback or DIALS branch comparison
@@ -55,6 +56,31 @@ Official source to consult:
 
 Integration expectation:
 - commands such as `dials.import` and related DIALS executables must resolve in the user environment
+
+### adxv (vision-module rendering backend, optional)
+
+Purpose in workflow:
+- preferred headless renderer for the vision module; draws resolution rings
+  directly from the CBF/H5 header geometry (`-rings -rfont ...`)
+- supports slab (`-slabs N`) and corner-crop (`-sa_crop WxH+X+Y`) views
+- used by `xtal-agent vision-scan` when present
+
+Requirement level:
+- optional — the vision module falls back to `dials.export_bitmaps` or
+  `fabio` + matplotlib. With adxv unavailable, vision_scan still runs but
+  with less accurate rings.
+
+Official source to consult:
+- https://www.scripps.edu/tainer/arvai/adxv.html (Scripps Research)
+
+Integration expectation:
+- the binary `adxv` must resolve on `$PATH`; it is **not** redistributed
+  with this package, so install it from the official source
+- if `adxv` is absent, the vision module falls back to DIALS or fabio
+- adxv is an X11/Motif program; headless invocation MUST be wrapped with
+  `xvfb-run -a adxv ...` (handled automatically by `vision_render._render_with_adxv`)
+- the Pillow, fabio, and hdf5plugin Python packages must be importable for
+  the dials/fabio fallback renderers
 
 ### CCP4
 
@@ -101,16 +127,33 @@ Integration expectation:
 ### Coot
 
 Purpose in workflow:
-- interactive model inspection and manual follow-up after automated refinement/diagnostic steps
+- **automatic post-refinement module**: after the refinement R-free plateaus,
+  MolProbity-guided COOT scripts correct rotamer outliers, perform
+  electron-density-guided real-space fitting, and add ordered waters;
+  the model is then re-refined and re-validated
+- interactive model inspection and manual follow-up when needed
 
 Requirement level:
-- optional for some automated checks, but expected for full interactive crystallographic workflow use
+- **enabled by default** for the post-refinement module
+- can be disabled per project with `coot: {enabled: false}` in `manifest.yaml`
+- if COOT is unavailable the module is skipped with a recorded warning
+
+Version and mode:
+- tested with COOT 0.9.8.x
+- headless invocation uses `coot --no-graphics -s <script> --no-guano`
+- the embedded COOT Python interpreter is Python 2.7; do not import the
+  host Python modules from COOT scripts
 
 Official source to consult:
 - Coot official distribution and documentation channels
 
 Integration expectation:
-- the `coot` executable should resolve in the user environment when interactive inspection is needed
+- the `coot` executable must resolve in the user environment
+- optional explicit locations:
+  - `XTAL_AGENT_COOT_BIN=/path/to/coot`
+  - `XTAL_AGENT_COOT_SCRIPTS=/path/to/skills/crystallography-coot-refinement/scripts`
+  - `XTAL_AGENT_PHENIX_BIN=/path/to/phenix.refine`
+  - `XTAL_AGENT_CCP4_SETUP=/path/to/ccp4.setup-sh`
 
 ## AI And Prediction Runtime Dependencies
 
@@ -181,7 +224,7 @@ The supported public deployment model is:
 
 - users install external crystallography software themselves
 - users install AI/prediction runtime dependencies themselves when they intend to use bundled prediction skills
-- users connect those tools to `crystal-agent` through environment setup
-- users verify availability with `crystal-agent check-env`
+- users connect those tools to `xtal-agent` through environment setup
+- users verify availability with `xtal-agent check-env`
 
 If a required command is missing, the environment is incomplete and must be fixed before running workflow phases.

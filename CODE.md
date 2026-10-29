@@ -9,8 +9,8 @@ This section includes the code surface that the repository itself defines as par
 ### `xtal-agent/pyproject.toml`
 
 Role:
-- Defines the installable Python project `crystal-agent`
-- Registers the console entry point `crystal-agent = "crystal_agent.cli:app"`
+- Defines the installable Python project `xtal-agent`
+- Registers the console entry point `xtal-agent = "xtal_agent.cli:app"`
 - Declares package discovery from `src`
 
 Why this belongs in code:
@@ -42,7 +42,7 @@ Why this belongs in code:
 
 ## Core Package
 
-### `xtal-agent/src/crystal_agent/`
+### `xtal-agent/src/xtal_agent/`
 
 Role:
 - Main packaged Python code for the agent
@@ -54,7 +54,26 @@ Why this belongs in code:
 
 ## Key Runtime Modules
 
-### `xtal-agent/src/crystal_agent/cli.py`
+### `xtal-agent/src/xtal_agent/coot_runner.py`
+
+Role:
+- COOT post-refinement module wrapper
+- generates the COOT strategy config, invokes the bundled
+  `crystallography-coot-refinement` skill, parses `strategy_summary.json`,
+  and applies the Rfree/geometry acceptance rule
+
+### `xtal-agent/src/xtal_agent/vision_schema.py`
+
+Role:
+- Pydantic schema and validation for `vision_report.json`
+
+### `xtal-agent/src/xtal_agent/vision_render.py`
+
+Role:
+- headless rendering of raw diffraction frames for multimodal inspection
+  (adxv, DIALS, or fabio fallback)
+
+### `xtal-agent/src/xtal_agent/cli.py`
 
 Role:
 - Public CLI command registration
@@ -77,8 +96,11 @@ Exposes commands used throughout the docs:
 - `naming-guide`
 - `enforce-checkpoint`
 - `resume-barrier`
+- `vision-scan`
+- `vision-validate`
+- `coot-optimize`
 
-### `xtal-agent/src/crystal_agent/architecture.py`
+### `xtal-agent/src/xtal_agent/architecture.py`
 
 Role:
 - Code-backed architecture registry
@@ -92,7 +114,7 @@ Owns:
 
 This file is part of the agent's functional structure, not just metadata.
 
-### `xtal-agent/src/crystal_agent/step_tracker.py`
+### `xtal-agent/src/xtal_agent/step_tracker.py`
 
 Role:
 - Step verification and guard enforcement
@@ -103,7 +125,7 @@ Owns:
 - guard state tracking
 - expert approval consumption checks
 
-### `xtal-agent/src/crystal_agent/phase_orchestrator.py`
+### `xtal-agent/src/xtal_agent/phase_orchestrator.py`
 
 Role:
 - Phase-by-phase execution wiring
@@ -112,7 +134,7 @@ Owns:
 - orchestrated `phase1` to `phase5_lowres`
 - mandatory decision-engine call paths required by the docs
 
-### `xtal-agent/src/crystal_agent/decision_engine.py`
+### `xtal-agent/src/xtal_agent/decision_engine.py`
 
 Role:
 - Evidence-based branch and recovery decisions
@@ -125,32 +147,32 @@ Referenced by docs for:
 - MR troubleshooting
 - refinement branching
 
-### `xtal-agent/src/crystal_agent/pipeline.py`
+### `xtal-agent/src/xtal_agent/pipeline.py`
 
 Role:
 - Autonomous pipeline runner and report producer
 
-### `xtal-agent/src/crystal_agent/report.py`
+### `xtal-agent/src/xtal_agent/report.py`
 
 Role:
 - HTML report rendering from Jinja template
 
-### `xtal-agent/src/crystal_agent/manifest.py`
+### `xtal-agent/src/xtal_agent/manifest.py`
 
 Role:
 - Manifest loading and validation
 
-### `xtal-agent/src/crystal_agent/schemas.py`
+### `xtal-agent/src/xtal_agent/schemas.py`
 
 Role:
 - Typed manifest, workflow, and result schemas
 
-### `xtal-agent/src/crystal_agent/map_ligand_atoms.py`
+### `xtal-agent/src/xtal_agent/map_ligand_atoms.py`
 
 Role:
 - AF3-to-CCP4 ligand atom mapping helper
 
-### `xtal-agent/src/crystal_agent/generate_XDS.INP`
+### `xtal-agent/src/xtal_agent/generate_XDS.INP`
 
 Role:
 - XDS input generation helper referenced by Phase 1 command templates
@@ -159,13 +181,13 @@ Role:
 
 The following modules are part of the packaged code surface and support the main workflow:
 
-- `xtal-agent/src/crystal_agent/envcheck.py`
-- `xtal-agent/src/crystal_agent/parsers.py`
-- `xtal-agent/src/crystal_agent/phaser_runner.py`
-- `xtal-agent/src/crystal_agent/refinement_runner.py`
-- `xtal-agent/src/crystal_agent/ranking.py`
-- `xtal-agent/src/crystal_agent/runner.py`
-- `xtal-agent/src/crystal_agent/workflow.py`
+- `xtal-agent/src/xtal_agent/envcheck.py`
+- `xtal-agent/src/xtal_agent/parsers.py`
+- `xtal-agent/src/xtal_agent/phaser_runner.py`
+- `xtal-agent/src/xtal_agent/refinement_runner.py`
+- `xtal-agent/src/xtal_agent/ranking.py`
+- `xtal-agent/src/xtal_agent/runner.py`
+- `xtal-agent/src/xtal_agent/workflow.py`
 
 ## Structure Summary
 
@@ -176,7 +198,7 @@ xtal-agent/
 ├── env/
 ├── pyproject.toml
 ├── src/
-│   └── crystal_agent/
+│   └── xtal_agent/
 ├── templates/
 ├── tests/
 └── workflows/

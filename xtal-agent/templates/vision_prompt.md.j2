@@ -1,0 +1,60 @@
+{# v2 sliding-window vision prompt
+   Variables:
+     geometry — geometry.json dict
+     windows  — list of (start, end, [frames]) per window
+     report_path — path for writing vision_report.json
+#}
+# Diffraction Image Inspection Task
+
+You are a protein crystallography data-collection expert. You will inspect
+{{ windows | length }} sliding-window montages ({{ geometry.segment_size }}
+consecutive frames each, 1024px/cell high-resolution tiles), in window order.
+
+Each frame has resolution rings drawn (green: 5A, 3.5A, 2.5A, 2A, 1.5A
+from center outward).
+
+Dataset info:
+- Total frames: {{ geometry.n_frames }}
+- Frames per window: {{ geometry.segment_size }}
+- Windows: {{ windows | length }}
+
+## Frame-by-frame assessment
+
+For each frame:
+
+1. **spot_shape** (choose one):
+   - `round` — near-circular, aspect ratio ~1, clean boundaries
+   - `slightly_elongated` — mild radial elongation (aspect 2-3), spots still discrete
+   - `streaky` — elongated into streaks, adjacent spots merge
+   - `diffuse` — edges blurred, intensity smeared
+   **Judge relative to this dataset's best frames.** If the whole dataset
+   is weak but uniform, mark all as `slightly_elongated` — not `streaky`.
+2. **ice_rings**: true/false — continuous sharp powder rings distinct
+   from lattice spots.
+3. **overloaded_spots**: none / few (<10) / many
+4. **background**: low / normal / high
+5. **spots beyond resolution rings** (booleans, per ring):
+   5A / 3.5A / 2.5A / 2A / 1.5A
+
+## Output requirements
+
+Write to `{{ report_path }}`. Schema version must be "2.0".
+
+Fields:
+- `frames_examined`: integer list 1, 2, ..., N (all frames, so code
+  can verify every window was covered).
+- `per_frame_observations`: spot_shape, ice_rings, overloaded_spots,
+  background, notes per frame.
+- `per_frame_spot_extent`: spots_beyond_* booleans per frame.
+- `estimated_resolution_A`: overall resolution estimate (float).
+- `recommended_spot_ranges`: list of [start, end] intervals covering
+  only ROUND / SLIGHTLY_ELONGATED frames — the longest good run(s)
+  for XDS SPOT_RANGE. All-good datasets: `[[1, N]]`.
+- `quality_grade`: A (excellent) / B (usable) / C (poor)
+- `caveats`: anything a human should know.
+
+Hard rules:
+1. No twinning fields. Twinning is judged by xtriage.
+2. Every claim must be based on what you see. Reference frame numbers.
+3. When unsure, note it in caveats — do not fabricate.
+4. After writing, run `xtal-agent vision-validate <project_dir>`.

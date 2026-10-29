@@ -16,8 +16,8 @@ crystallography-phase1-xds-processing
 Then run:
 
 ```bash
-source crystal-agent/env/activate.sh
-crystal-agent phase-guide phase1
+source xtal-agent/env/activate.sh
+xtal-agent phase-guide phase1
 ```
 
-Do not continue from this wrapper. The canonical Phase 1 workflow now lives in `skills/crystallography-phase1-xds-processing/SKILL.md` and `crystal-agent phase-guide phase1`.
+Do not continue from this wrapper. The canonical Phase 1 workflow now lives in `skills/crystallography-phase1-xds-processing/SKILL.md` and `xtal-agent phase-guide phase1`.

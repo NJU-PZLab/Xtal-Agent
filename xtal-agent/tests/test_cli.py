@@ -2,7 +2,7 @@ from pathlib import Path
 
 from typer.testing import CliRunner
 
-from crystal_agent.cli import _format_check_message, app
+from xtal_agent.cli import _format_check_message, app
 
 
 runner = CliRunner()
@@ -19,6 +19,8 @@ def test_validate_manifest_command(tmp_path: Path):
         """
 project_id: cli_project
 workflow_mode: expert
+vision:
+  enabled: false
 inputs:
   diffraction:
     type: raw_images
@@ -71,8 +73,8 @@ def test_format_check_message_summarizes_multiple_gpus():
 
 
 def test_check_gpu_command_prints_all_detected_gpu_lines(monkeypatch):
-    from crystal_agent import cli
-    from crystal_agent.schemas import SoftwareCheck
+    from xtal_agent import cli
+    from xtal_agent.schemas import SoftwareCheck
 
     def fake_check_required_commands(_commands=None):
         return [
@@ -110,6 +112,8 @@ def test_run_pipeline_rejects_expert_mode_project(tmp_path: Path):
         """
 project_id: cli_project
 workflow_mode: expert
+vision:
+  enabled: false
 inputs:
   diffraction:
     type: raw_images
@@ -152,6 +156,8 @@ def test_run_phase_cli_rejects_expert_mode_project_without_approval(tmp_path: Pa
         """
 project_id: cli_project
 workflow_mode: expert
+vision:
+  enabled: false
 inputs:
   diffraction:
     type: raw_images
@@ -179,7 +185,7 @@ policy:
 def test_expert_approve_cli_records_approval(tmp_path: Path):
     project = tmp_path / "project"
     project.mkdir()
-    (project / "manifest.yaml").write_text("workflow_mode: expert\n")
+    (project / "manifest.yaml").write_text("workflow_mode: expert\nvision:\n  enabled: false\n")
 
     result = runner.invoke(
         app,

@@ -3,8 +3,8 @@ from pathlib import Path
 
 from typer.testing import CliRunner
 
-from crystal_agent.cli import app
-from crystal_agent.architecture import (
+from xtal_agent.cli import app
+from xtal_agent.architecture import (
     audit_architecture,
     collect_backup_targets,
     extract_placeholders,
@@ -23,8 +23,8 @@ def test_collect_backup_targets_includes_docs_skills_code_and_excludes_raw_data(
     (tmp_path / "AGENTS.md").write_text("manual")
     (tmp_path / "skills").mkdir()
     (tmp_path / "skills" / "demo.md").write_text("skill")
-    (tmp_path / "crystal-agent" / "src").mkdir(parents=True)
-    (tmp_path / "crystal-agent" / "src" / "code.py").write_text("print('x')")
+    (tmp_path / "xtal-agent" / "src").mkdir(parents=True)
+    (tmp_path / "xtal-agent" / "src" / "code.py").write_text("print('x')")
     (tmp_path / "docs").mkdir()
     (tmp_path / "docs" / "note.md").write_text("doc")
     (tmp_path / "example").mkdir()
@@ -36,7 +36,7 @@ def test_collect_backup_targets_includes_docs_skills_code_and_excludes_raw_data(
 
     assert "AGENTS.md" in targets
     assert "skills" in targets
-    assert "crystal-agent/src" in targets
+    assert "xtal-agent/src" in targets
     assert "docs" in targets
     assert "example" in targets
     assert "image_0001.cbf" not in targets
@@ -85,11 +85,14 @@ def test_audit_architecture_passes_when_all_mandatory_rules_are_present(tmp_path
                 "select_best_copy_number",
                 "phaser_troubleshooting_order",
                 "should_use_twin_refinement",
-                "crystal-agent run-phase",
+                "xtal-agent run-phase",
+                "vision.enabled",
+                "vision_report.json",
+                "ask the user whether to enable",
             ]
         )
     )
-    src = tmp_path / "crystal-agent" / "src" / "crystal_agent"
+    src = tmp_path / "xtal-agent" / "src" / "xtal_agent"
     src.mkdir(parents=True)
     (src / "phase_orchestrator.py").write_text(
         "idxref_failure_fix\n"
@@ -102,7 +105,7 @@ def test_audit_architecture_passes_when_all_mandatory_rules_are_present(tmp_path
     )
     (src / "step_tracker.py").write_text("should_use_twin_refinement\n")
     (tmp_path / "skills").mkdir()
-    (tmp_path / "skills" / "phase.md").write_text("crystal-agent guard\ncrystal-agent verify-steps")
+    (tmp_path / "skills" / "phase.md").write_text("xtal-agent guard\nxtal-agent verify-steps")
 
     result = audit_architecture(tmp_path)
 
@@ -123,8 +126,8 @@ def test_audit_architecture_cli_exits_nonzero_when_rules_missing(tmp_path: Path)
 def test_phase_guide_contains_code_calls_and_hard_stop_rules():
     guide = get_phase_guide("phase5")
 
-    assert any("crystal-agent guard" in call for call in guide.code_calls)
-    assert any("crystal-agent verify-steps" in call for call in guide.code_calls)
+    assert any("xtal-agent guard" in call for call in guide.code_calls)
+    assert any("xtal-agent verify-steps" in call for call in guide.code_calls)
     assert "4+ Phenix rounds" in guide.mandatory_rules
     assert "4+ Refmac rounds" in guide.mandatory_rules
     assert any("immediately preceding round" in rule for rule in guide.mandatory_rules)
@@ -136,7 +139,7 @@ def test_phase_guides_include_orchestrator_decision_calls():
     phase3 = "\n".join(get_phase_guide("phase3").code_calls)
     phase4 = "\n".join(get_phase_guide("phase4").code_calls)
 
-    assert "crystal-agent run-phase" in phase1
+    assert "xtal-agent run-phase" in phase1
     assert "idxref_failure_fix" in phase1
     assert "suggest_data_range_from_mosaicity" in phase1
     assert "sg_conflict_resolution" in phase2
@@ -149,15 +152,15 @@ def test_phase_guides_include_orchestrator_decision_calls():
 def test_run_phase_command_template_exists():
     template = get_command_template("run-phase")
 
-    assert "crystal-agent run-phase" in template.command
+    assert "xtal-agent run-phase" in template.command
 
 
 def test_audit_requires_decision_runtime_and_doc_coverage(tmp_path: Path):
-    (tmp_path / "AGENTS.md").write_text("idxref_failure_fix\ncrystal-agent run-phase\n")
-    src = tmp_path / "crystal-agent" / "src" / "crystal_agent"
+    (tmp_path / "AGENTS.md").write_text("idxref_failure_fix\nxtal-agent run-phase\n")
+    src = tmp_path / "xtal-agent" / "src" / "xtal_agent"
     src.mkdir(parents=True)
     (src / "phase_orchestrator.py").write_text(
-        "from crystal_agent.decision_engine import idxref_failure_fix\nidxref_failure_fix\n"
+        "from xtal_agent.decision_engine import idxref_failure_fix\nidxref_failure_fix\n"
     )
 
     result = audit_architecture(tmp_path)
@@ -318,7 +321,7 @@ def test_skill_command_template_references_exist():
     for skill_path in (root / "skills").glob("*/SKILL.md"):
         text = skill_path.read_text()
         for line in text.splitlines():
-            marker = "crystal-agent command-template "
+            marker = "xtal-agent command-template "
             if marker not in line:
                 continue
             name = line.split(marker, 1)[1].strip().split()[0].strip("`;,.")
@@ -380,7 +383,7 @@ def test_naming_conventions_consistent_with_command_template_outputs():
 
 
 def test_step_tracker_patterns_align_with_naming_conventions():
-    from crystal_agent.step_tracker import StepTracker
+    from xtal_agent.step_tracker import StepTracker
 
     tracker = StepTracker("/tmp")
     conventions = get_naming_conventions()
@@ -395,7 +398,7 @@ def test_step_tracker_patterns_align_with_naming_conventions():
 
 def test_step_tracker_accepts_canonical_naming_prefixes(tmp_path: Path):
     """Verify StepTracker glob patterns accept files named per NAMING_CONVENTIONS."""
-    from crystal_agent.step_tracker import StepTracker
+    from xtal_agent.step_tracker import StepTracker
 
     tracker = StepTracker(str(tmp_path))
 

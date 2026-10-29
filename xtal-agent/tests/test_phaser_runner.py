@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from crystal_agent.phaser_runner import build_phaser_input, parse_phaser_sol
+from xtal_agent.phaser_runner import build_phaser_input, parse_phaser_sol
 
 
 def test_parse_phaser_sol_extracts_all_metrics():

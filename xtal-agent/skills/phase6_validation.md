@@ -3,14 +3,14 @@
 ## Required Code Call
 
 ```bash
-crystal-agent phase-guide phase6
+xtal-agent phase-guide phase6
 ```
 
 ## Required Command Templates
 
-Use `crystal-agent command-template molprobity-final` and `mtzdump-resolution`. Do not invent final validation command syntax from memory.
+Use `xtal-agent command-template molprobity-final` and `mtzdump-resolution`. Do not invent final validation command syntax from memory.
 
-Wrap the phase with `crystal-agent guard <project_dir> --before phase6_molprobity` and `--after phase6_molprobity`. Run `crystal-agent verify-steps <project_dir>` after every step.
+Wrap the phase with `xtal-agent guard <project_dir> --before phase6_molprobity` and `--after phase6_molprobity`. Run `xtal-agent verify-steps <project_dir>` after every step.
 
 ## Mandatory Steps
 
