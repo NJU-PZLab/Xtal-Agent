@@ -1,4 +1,4 @@
-from crystal_agent.runner import run_command
+from xtal_agent.runner import run_command
 
 
 def test_run_command_captures_success():

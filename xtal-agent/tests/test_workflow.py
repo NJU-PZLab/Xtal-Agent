@@ -1,5 +1,5 @@
-from crystal_agent.schemas import DiffractionType, WorkflowMode
-from crystal_agent.workflow import (
+from xtal_agent.schemas import DiffractionType, WorkflowMode
+from xtal_agent.workflow import (
     ExpertModeRequired,
     UnsupportedSimpleModeInput,
     ensure_autonomous_cli_allowed,

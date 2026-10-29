@@ -18,4 +18,4 @@ rule run_full_pipeline:
         html=f"{REPORTS_DIR}/validation_summary.html",
         candidates=f"{RESULTS_DIR}/ranked_candidates.json",
     shell:
-        "crystal-agent run-pipeline {PROJECT_DIR}"
+        "xtal-agent run-pipeline {PROJECT_DIR}"

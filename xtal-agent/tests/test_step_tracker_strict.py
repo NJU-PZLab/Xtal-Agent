@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from crystal_agent.step_tracker import Guard, StepTracker
+from xtal_agent.step_tracker import Guard, StepTracker
 
 
 def test_aimless_resolution_rejects_failed_outer_shell_thresholds(tmp_path: Path):
@@ -178,7 +178,7 @@ def test_expert_guard_before_requires_approval(tmp_path: Path):
 
 
 def test_expert_approval_is_consumed_once(tmp_path: Path):
-    from crystal_agent.step_tracker import approve_expert_step
+    from xtal_agent.step_tracker import approve_expert_step
 
     (tmp_path / "manifest.yaml").write_text("workflow_mode: expert\n")
     (tmp_path / "XDS.INP").write_text("JOB= IDXREF DEFPIX INTEGRATE CORRECT\n")
@@ -202,7 +202,7 @@ def test_expert_approval_is_consumed_once(tmp_path: Path):
 
 
 def test_expert_approval_not_consumed_when_prerequisites_fail(tmp_path: Path):
-    from crystal_agent.step_tracker import approve_expert_step
+    from xtal_agent.step_tracker import approve_expert_step
 
     (tmp_path / "manifest.yaml").write_text("workflow_mode: expert\n")
     (tmp_path / "XDS.INP").write_text("JOB= IDXREF DEFPIX INTEGRATE CORRECT\n")
@@ -335,7 +335,7 @@ def test_high_rfree_diagnosis_calls_twin_refinement_decision(monkeypatch, tmp_pa
         return True
 
     monkeypatch.setattr(
-        "crystal_agent.step_tracker.should_use_twin_refinement",
+        "xtal_agent.step_tracker.should_use_twin_refinement",
         fake_should_use_twin_refinement,
     )
 
@@ -353,7 +353,7 @@ def test_guard_before_runs_verify_steps_and_blocks_missing_prerequisites(tmp_pat
     guard.state = {"completed": [], "current": None}
     guard._save()
 
-    from crystal_agent.step_tracker import Guard as G
+    from xtal_agent.step_tracker import Guard as G
     g = G(str(tmp_path))
     try:
         g.before("phase2_pointless")
@@ -396,7 +396,7 @@ def test_step_tracker_flags_guard_consistency(tmp_path: Path):
 
     tracker = StepTracker(str(tmp_path))
     tracker.run()
-    from crystal_agent.step_tracker import check_guard_consistency
+    from xtal_agent.step_tracker import check_guard_consistency
     violations = check_guard_consistency(str(tmp_path))
     assert "phenix_r4" in str(violations)
 
@@ -537,7 +537,7 @@ def test_simple_mode_keeps_outer_shell_margin_gate(tmp_path: Path):
 
 
 def test_expert_guard_prerequisites_use_output_fallback(tmp_path: Path):
-    from crystal_agent.step_tracker import approve_expert_step
+    from xtal_agent.step_tracker import approve_expert_step
 
     (tmp_path / "manifest.yaml").write_text("workflow_mode: expert\n")
     (tmp_path / "XDS.INP").write_text("JOB= IDXREF DEFPIX INTEGRATE CORRECT\n")
